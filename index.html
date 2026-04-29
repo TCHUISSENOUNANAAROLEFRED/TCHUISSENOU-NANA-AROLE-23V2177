@@ -234,13 +234,26 @@
                 <button type="button" class="btn-next" onclick="move(3, 4)">Suivant →</button>
             </div>
 
-            <div class="form-step" id="step4">
-                <h3>🚨 En cas d'urgence</h3>
-                <div class="input-group"><label>Contact Urgence</label><input type="text" placeholder="Nom du parent"></div>
-                <div class="input-group"><label>Téléphone Urgence</label><input type="tel" placeholder="6XXXXXXXX"></div>
-                <button type="button" class="btn-prev" onclick="move(4, 3)">Retour</button>
-                <button type="submit" class="btn-next">Valider le dossier ✅</button>
-            </div>
+           <div class="form-step" id="step4">
+    <h3>🚨 En cas d'urgence</h3>
+    
+    <div class="input-group">
+        <label>Contact Urgence<span class="required-star">*</span></label>
+        <input type="text" class="required" placeholder="Nom du parent">
+    </div>
+    
+    <div class="input-group">
+        <label>Téléphone Urgence<span class="required-star">*</span></label>
+        <input type="tel" class="required" placeholder="6XXXXXXXX">
+    </div>
+    
+    <p class="error-msg" id="error4">Veuillez remplir les contacts d'urgence avant de valider.</p>
+
+    <div class="grid">
+        <button type="button" class="btn-prev" onclick="move(4, 3)">Retour</button>
+        <button type="submit" class="btn-next">Valider le dossier ✅</button>
+    </div>
+</div>
         </form>
     </div>
 
