@@ -3,307 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SANTÉ UY1 - Examen Final</title>
+    <title>Portail Médical UY1</title>
     <style>
         :root {
-            --bg-dark: #0f0f0f;
-            --card-bg: rgba(25, 25, 25, 0.9);
-            --primary-green: #2ecc71;
-            --text-gray: #a0a0a0;
-            --white: #ffffff;
-            --error: #e74c3c;
+            --bg-dark: #0a0a0a;
+            --card-bg: rgba(28, 28, 23, 0.6);
+            --primary-green: #7cfc00;
+            --accent-green: #2ecc71;
+            --text-gray: #8a8a8a;
+            --gold: #d4af37;
+            --error: #ff4d4d;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            /* Image de fond avec overlay pour la lisibilité */
-            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
-                        url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1000');
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
+                        url('https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=2000');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            color: var(--white);
+            color: #fff;
             margin: 0;
             padding: 20px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            min-height: 100vh;
         }
+
+        /* En-tête style AgroField */
+        .header-section {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .header-section h1 {
+            font-size: 3rem;
+            margin: 0;
+            line-height: 1;
+            font-weight: 800;
+        }
+
+        .text-white { color: white; }
+        .text-gradient {
+            background: linear-gradient(to right, var(--primary-green), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-desc {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-top: 15px;
+            line-height: 1.4;
+            max-width: 450px;
+        }
+
+        .required-star { color: var(--error); margin-left: 3px; }
 
         .container {
             width: 100%;
-            max-width: 480px;
+            max-width: 550px;
             background: var(--card-bg);
-            padding: 35px;
-            border-radius: 25px;
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Barre de progression (Stepper) */
+        /* Stepper horizontal */
         .stepper {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 35px;
-            position: relative;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
         }
 
-        .step-item {
-            text-align: center;
-            flex: 1;
-            z-index: 2;
-        }
+        .step-item { font-size: 10px; color: var(--text-gray); text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
+        .step-item.active { color: var(--primary-green); font-weight: bold; }
+        .circle { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--text-gray); display: inline-flex; align-items: center; justify-content: center; font-size: 9px; }
+        .step-item.active .circle { background: var(--primary-green); color: black; border-color: var(--primary-green); }
 
-        .step-number {
-            width: 32px;
-            height: 32px;
-            background: #222;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 8px;
-            font-size: 13px;
-            font-weight: bold;
-            color: var(--text-gray);
-            border: 2px solid #333;
-            transition: all 0.4s ease;
-        }
-
-        .step-item.active .step-number {
-            background: var(--primary-green);
-            color: black;
-            border-color: var(--primary-green);
-            box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
-        }
-
-        .step-item.completed .step-number {
-            background: #1a5c35;
-            color: white;
-            border-color: #1a5c35;
-        }
-
-        .step-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-gray); }
-
-        /* Animation des pages */
+        /* Formulaire */
         .form-step { display: none; }
-        .form-step.active { 
-            display: block; 
-            animation: fadeInScale 0.4s ease-out; 
-        }
+        .form-step.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        h2 { font-size: 24px; margin-bottom: 25px; color: var(--primary-green); text-align: center; font-weight: 600; }
+        h3 { font-size: 1.2rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
         
-        .input-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; color: var(--text-gray); font-size: 14px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 6px; color: var(--text-gray); font-size: 0.8rem; text-transform: uppercase; }
         
-        input, select {
+        input, select, textarea {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: 8px;
             color: white;
-            font-size: 16px;
+            font-size: 0.9rem;
             box-sizing: border-box;
-            transition: 0.3s;
         }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary-green);
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .btn-nav {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 14px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 10px;
-        }
-
-        .btn-next { background: var(--primary-green); color: #000; }
-        .btn-next:hover { background: #27ae60; transform: translateY(-2px); }
-        .btn-prev { background: transparent; color: var(--text-gray); border: 1px solid #444; }
-        .btn-prev:hover { background: rgba(255,255,255,0.05); }
 
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .btn-next {
+            background: var(--accent-green);
+            color: black;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            float: right;
+            margin-top: 20px;
+        }
 
-        /* Style spécifique pour le bouton final */
-        .btn-submit { background: #27ae60; color: white; border: none; }
+        .btn-prev {
+            background: rgba(255,255,255,0.05);
+            color: white;
+            padding: 12px 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* Message d'erreur */
+        .error-msg { color: var(--error); font-size: 0.8rem; display: none; margin-top: 5px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="stepper">
-        <div class="step-item active" id="s1"><div class="step-number">1</div><div class="step-label">Identité</div></div>
-        <div class="step-item" id="s2"><div class="step-number">2</div><div class="step-label">Cursus</div></div>
-        <div class="step-item" id="s3"><div class="step-number">3</div><div class="step-label">Santé</div></div>
-        <div class="step-item" id="s4"><div class="step-number">4</div><div class="step-label">Urgence</div></div>
+    <div class="header-section">
+        <h1><span class="text-white">Relevé</span><br><span class="text-gradient">Médical</span></h1>
+        <p class="header-desc">Dossier médical numérique des étudiants de l'université de Yaoundé I.</p>
     </div>
 
-    <form id="medicalForm">
-        <div class="form-step active" id="step1">
-            <h2>👤 Informations Personnelles</h2>
-            <div class="input-group">
-                <label>Nom Complet</label>
-                <input type="text" placeholder="Ex: Nana Arole Fred" required>
-            </div>
-            <div class="grid">
-                <div class="input-group">
-                    <label>Matricule (7 car.)</label>
-                    <input type="text" maxlength="7" placeholder="23V2177">
-                </div>
-                <div class="input-group">
-                    <label>Téléphone</label>
-                    <input type="tel" placeholder="656641731">
-                </div>
-            </div>
-            <button type="button" class="btn-nav btn-next" onclick="move(1, 2)">Étape suivante →</button>
+    <div class="container">
+        <div class="stepper">
+            <div class="step-item active" id="s1"><span class="circle">1</span> Identité</div>
+            <div class="step-item" id="s2"><span class="circle">2</span> Cursus</div>
+            <div class="step-item" id="s3"><span class="circle">3</span> Santé</div>
+            <div class="step-item" id="s4"><span class="circle">4</span> Urgence</div>
         </div>
 
-        <div class="form-step" id="step2">
-            <h2>🎓 Parcours Universitaire</h2>
-            <div class="input-group">
-                <label>Faculté / École</label>
-                <select>
-                    <option>Faculté des Sciences (FS)</option>
-                    <option>Faculté des Arts, Lettres et Sciences Humaines (FALSH)</option>
-                    <option>Faculté des Sciences Juridiques et Politiques (FSJP)</option>
-                    <option>Faculté des Sciences de l'Éducation (FSE)</option>
-                    <option>Faculté de Médecine et des Sciences Biomédicales (FMSB)</option>
-                    <option>École Normale Supérieure (ENS)</option>
-                    <option>École Nationale Supérieure Polytechnique (ENSPY)</option>
-                    <option>IUT / Autres</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label>Filière / Département</label>
-                <input type="text" placeholder="Ex: Informatique">
-            </div>
-            <div class="grid">
-                <button type="button" class="btn-nav btn-prev" onclick="move(2, 1)">Retour</button>
-                <button type="button" class="btn-nav btn-next" onclick="move(2, 3)">Suivant</button>
-            </div>
-        </div>
-
-        <div class="form-step" id="step3">
-            <h2>🩺 Paramètres Médicaux</h2>
-            <div class="grid">
+        <form id="medicalForm">
+            <div class="form-step active" id="step1">
+                <h3>👤 Informations Personnelles</h3>
                 <div class="input-group">
-                    <label>Groupe Sanguin</label>
-                    <select>
-                        <option>O+</option><option>O-</option>
-                        <option>A+</option><option>A-</option>
-                        <option>B+</option><option>B-</option>
-                        <option>AB+</option><option>AB-</option>
-                        <option>Ne sais pas</option>
+                    <label>Nom Complet<span class="required-star">*</span></label>
+                    <input type="text" class="required" placeholder="Ex: Nana Arole Fred">
+                </div>
+                <div class="input-group">
+                    <label>Email<span class="required-star">*</span></label>
+                    <input type="email" class="required" placeholder="etudiant@uy1.cm">
+                </div>
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Date de Naissance<span class="required-star">*</span></label>
+                        <input type="date" class="required">
+                    </div>
+                    <div class="input-group">
+                        <label>Lieu de Naissance<span class="required-star">*</span></label>
+                        <input type="text" class="required" placeholder="Ex: Yaoundé">
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Matricule<span class="required-star">*</span></label>
+                        <input type="text" class="required" placeholder="23V2177">
+                    </div>
+                    <div class="input-group">
+                        <label>Téléphone<span class="required-star">*</span></label>
+                        <input type="tel" class="required" placeholder="656641731">
+                    </div>
+                </div>
+                <p class="error-msg" id="error1">Veuillez remplir tous les champs obligatoires (*).</p>
+                <button type="button" class="btn-next" onclick="validateAndMove(1, 2)">Étape suivante →</button>
+            </div>
+
+            <div class="form-step" id="step2">
+                <h3>🎓 Parcours Universitaire</h3>
+                <div class="input-group">
+                    <label>Faculté / École<span class="required-star">*</span></label>
+                    <select class="required">
+                        <option value="">Sélectionner...</option>
+                        <option>FS (Sciences)</option>
+                        <option>FALSH (Lettres)</option>
+                        <option>FSJP (Juridiques)</option>
+                        <option>FMSB (Médecine)</option>
+                        <option>ENSPY (Polytechnique)</option>
                     </select>
                 </div>
-                <div class="input-group">
-                    <label>Température (°C)</label>
-                    <input type="number" step="0.1" placeholder="37.0">
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Niveau<span class="required-star">*</span></label>
+                        <select class="required">
+                            <option value="">Niveau...</option>
+                            <option>Licence 1</option><option>Licence 2</option><option>Licence 3</option>
+                            <option>Master 1</option><option>Master 2</option><option>Doctorat</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Filière<span class="required-star">*</span></label>
+                        <input type="text" class="required" placeholder="Ex: Informatique">
+                    </div>
                 </div>
+                <p class="error-msg" id="error2">Veuillez remplir tous les champs obligatoires (*).</p>
+                <button type="button" class="btn-prev" onclick="move(2, 1)">Retour</button>
+                <button type="button" class="btn-next" onclick="validateAndMove(2, 3)">Suivant →</button>
             </div>
-            <div class="grid">
-                <div class="input-group">
-                    <label>Poids (kg)</label>
-                    <input type="number" placeholder="70">
+
+            <div class="form-step" id="step3">
+                <h3>🩺 Santé & Antécédents</h3>
+                <div class="grid">
+                    <div class="input-group"><label>Allergies</label><input type="text" placeholder="Ex: Pénicilline, Arachides"></div>
+                    <div class="input-group"><label>Opéré déjà ?</label><select><option>Non</option><option>Oui</option></select></div>
                 </div>
                 <div class="input-group">
-                    <label>Tension</label>
-                    <input type="text" placeholder="12/8">
+                    <label>Antécédents médicaux graves</label>
+                    <textarea rows="2" placeholder="Ex: Asthme, Diabète, etc."></textarea>
                 </div>
+                <div class="grid">
+                    <div class="input-group"><label>Groupe Sanguin</label><select><option>O+</option><option>A+</option><option>B+</option></select></div>
+                    <div class="input-group"><label>Poids (kg)</label><input type="number" placeholder="70"></div>
+                </div>
+                <button type="button" class="btn-prev" onclick="move(3, 2)">Retour</button>
+                <button type="button" class="btn-next" onclick="move(3, 4)">Suivant →</button>
             </div>
-            <div class="grid">
-                <button type="button" class="btn-nav btn-prev" onclick="move(3, 2)">Retour</button>
-                <button type="button" class="btn-nav btn-next" onclick="move(3, 4)">Suivant</button>
+
+            <div class="form-step" id="step4">
+                <h3>🚨 En cas d'urgence</h3>
+                <div class="input-group"><label>Contact Urgence</label><input type="text" placeholder="Nom du parent"></div>
+                <div class="input-group"><label>Téléphone Urgence</label><input type="tel" placeholder="6XXXXXXXX"></div>
+                <button type="button" class="btn-prev" onclick="move(4, 3)">Retour</button>
+                <button type="submit" class="btn-next">Valider le dossier ✅</button>
             </div>
-        </div>
+        </form>
+    </div>
 
-        <div class="form-step" id="step4">
-            <h2>🚨 En cas d'urgence</h2>
-            <div class="input-group">
-                <label>Nom du contact (Parent/Tuteur)</label>
-                <input type="text" placeholder="Nom complet">
-            </div>
-            <div class="input-group">
-                <label>Téléphone du contact</label>
-                <input type="tel" placeholder="Numéro joignable">
-            </div>
-            <div class="grid">
-                <button type="button" class="btn-nav btn-prev" onclick="move(4, 3)">Retour</button>
-                <button type="submit" class="btn-nav btn-next btn-submit">Valider le dossier ✅</button>
-            </div>
-        </div>
-    </form>
-</div>
+    <script>
+        function validateAndMove(current, next) {
+            const currentStepDiv = document.getElementById('step' + current);
+            const inputs = currentStepDiv.querySelectorAll('.required');
+            let allFilled = true;
 
-<script>
-    /**
-     * Gère le passage entre les étapes du formulaire
-     * @param {number} current - L'étape actuelle
-     * @param {number} next - L'étape vers laquelle aller
-     */
-    function move(current, next) {
-        // Validation simple : on s'assure que les éléments existent
-        const currentStep = document.getElementById('step' + current);
-        const nextStep = document.getElementById('step' + next);
+            inputs.forEach(input => {
+                if (input.value.trim() === "") {
+                    input.style.border = "1px solid var(--error)";
+                    allFilled = false;
+                } else {
+                    input.style.border = "1px solid rgba(255, 255, 255, 0.1)";
+                }
+            });
 
-        if (currentStep && nextStep) {
-            // Masquer l'étape actuelle et afficher la suivante
-            currentStep.classList.remove('active');
-            nextStep.classList.add('active');
-
-            // Mise à jour visuelle du Stepper
-            updateStepper(next);
-            
-            // Scroll automatique vers le haut du formulaire pour mobile
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    }
-
-    /**
-     * Met à jour l'état visuel de la barre de progression
-     * @param {number} activeStepNum - Le numéro de l'étape active
-     */
-    function updateStepper(activeStepNum) {
-        const items = document.querySelectorAll('.step-item');
-        
-        items.forEach((item, index) => {
-            const stepNum = index + 1;
-            
-            if (stepNum === activeStepNum) {
-                item.classList.add('active');
-                item.classList.remove('completed');
-            } else if (stepNum < activeStepNum) {
-                item.classList.add('completed');
-                item.classList.remove('active');
+            if (allFilled) {
+                document.getElementById('error' + current).style.display = "none";
+                move(current, next);
             } else {
-                item.classList.remove('active', 'completed');
+                document.getElementById('error' + current).style.display = "block";
             }
-        });
-    }
-
-    // Gestion de la soumission finale
-    document.getElementById('medicalForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Félicitations ! Votre dossier médical a été enregistré avec succès.');
-        // Ici tu peux ajouter ton code pour envoyer les données au serveur
-    });
-</script>
-
+        }
+        function move(current, next) {
+            document.getElementById('step' + current).classList.remove('active');
+            document.getElementById('step' + next).classList.add('active');
+            
+            // Stepper update
+            document.querySelectorAll('.step-item').forEach((item, index) => {
+                if (index + 1 <= next) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+        }
+    </script>
 </body>
 </html>
