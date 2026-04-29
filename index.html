@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SANTÉ UY1 - Portail Médical</title>
+    <title>SANTÉ UY1 - Examen Final</title>
     <style>
         :root {
-            --bg-dark: #121212;
-            --card-bg: rgba(30, 30, 30, 0.85); /* Rendu transparent pour le glassmorphism */
+            --bg-dark: #0f0f0f;
+            --card-bg: rgba(25, 25, 25, 0.9);
             --primary-green: #2ecc71;
-            --text-gray: #b3b3b3;
+            --text-gray: #a0a0a0;
             --white: #ffffff;
+            --error: #e74c3c;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            /* AJOUT : Image de fond médicale/universitaire */
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                        url('https://images.unsplash.com/photo-1576091160550-2173dbc9982a?auto=format&fit=crop&q=80&w=1000');
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            /* Image de fond avec overlay pour la lisibilité */
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+                        url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1000');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -32,134 +33,166 @@
 
         .container {
             width: 100%;
-            max-width: 450px; /* Un peu plus étroit pour un look mobile-first */
+            max-width: 480px;
             background: var(--card-bg);
-            padding: 30px;
-            border-radius: 24px;
-            backdrop-filter: blur(15px); /* Effet de flou sur le fond */
+            padding: 35px;
+            border-radius: 25px;
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
-        /* Stepper amélioré */
+        /* Barre de progression (Stepper) */
         .stepper {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             position: relative;
         }
 
         .step-item {
             text-align: center;
             flex: 1;
-            position: relative;
+            z-index: 2;
         }
 
         .step-number {
-            width: 30px;
-            height: 30px;
-            background: #333;
+            width: 32px;
+            height: 32px;
+            background: #222;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 5px;
-            font-size: 14px;
+            margin: 0 auto 8px;
+            font-size: 13px;
             font-weight: bold;
             color: var(--text-gray);
-            transition: 0.4s;
+            border: 2px solid #333;
+            transition: all 0.4s ease;
         }
 
         .step-item.active .step-number {
             background: var(--primary-green);
             color: black;
+            border-color: var(--primary-green);
             box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
         }
 
         .step-item.completed .step-number {
             background: #1a5c35;
-            color: var(--white);
+            color: white;
+            border-color: #1a5c35;
         }
 
-        .step-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-gray); }
+        .step-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-gray); }
 
-        /* Formulaire */
+        /* Animation des pages */
         .form-step { display: none; }
-        .form-step.active { display: block; animation: slideIn 0.4s ease-out; }
-
-        @keyframes slideIn { 
-            from { opacity: 0; transform: translateX(20px); } 
-            to { opacity: 1; transform: translateX(0); } 
+        .form-step.active { 
+            display: block; 
+            animation: fadeInScale 0.4s ease-out; 
         }
 
-        h2 { font-size: 22px; margin-bottom: 25px; color: var(--primary-green); text-align: center;}
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        h2 { font-size: 24px; margin-bottom: 25px; color: var(--primary-green); text-align: center; font-weight: 600; }
         
-        .input-group { margin-bottom: 18px; }
-        label { display: block; margin-bottom: 8px; color: var(--text-gray); font-size: 13px; font-weight: 500; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: var(--text-gray); font-size: 14px; }
         
         input, select {
             width: 100%;
             padding: 14px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             color: white;
+            font-size: 16px;
             box-sizing: border-box;
-            outline: none;
+            transition: 0.3s;
         }
 
-        input:focus { border-color: var(--primary-green); background: rgba(255,255,255,0.1); }
-
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            background: rgba(255, 255, 255, 0.1);
+        }
         .btn-nav {
             width: 100%;
             padding: 16px;
             border: none;
             border-radius: 14px;
-            font-weight: 700;
+            font-weight: bold;
+            font-size: 16px;
             cursor: pointer;
             transition: 0.3s;
             margin-top: 10px;
-            font-size: 15px;
         }
+
         .btn-next { background: var(--primary-green); color: #000; }
         .btn-next:hover { background: #27ae60; transform: translateY(-2px); }
-        .btn-prev { background: transparent; color: var(--text-gray); border: 1px solid rgba(255,255,255,0.2); }
+        .btn-prev { background: transparent; color: var(--text-gray); border: 1px solid #444; }
+        .btn-prev:hover { background: rgba(255,255,255,0.05); }
 
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        /* Style spécifique pour le bouton final */
+        .btn-submit { background: #27ae60; color: white; border: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="stepper">
-        <div class="step-item active" id="s1"><div class="step-number">1</div><div class="step-label">ID</div></div>
+        <div class="step-item active" id="s1"><div class="step-number">1</div><div class="step-label">Identité</div></div>
         <div class="step-item" id="s2"><div class="step-number">2</div><div class="step-label">Cursus</div></div>
         <div class="step-item" id="s3"><div class="step-number">3</div><div class="step-label">Santé</div></div>
-        <div class="step-item" id="s4"><div class="step-number">4</div><div class="step-label">Aide</div></div>
+        <div class="step-item" id="s4"><div class="step-number">4</div><div class="step-label">Urgence</div></div>
     </div>
 
     <form id="medicalForm">
         <div class="form-step active" id="step1">
-            <h2>👤 Identité</h2>
-            <div class="input-group"><label>Nom Complet</label><input type="text" placeholder="Ex: Nana Arole Fred"></div>
-            <div class="grid">
-                <div class="input-group"><label>Matricule</label><input type="text" maxlength="7" placeholder="23V2177"></div>
-                <div class="input-group"><label>Téléphone</label><input type="tel" placeholder="656641731"></div>
+            <h2>👤 Informations Personnelles</h2>
+            <div class="input-group">
+                <label>Nom Complet</label>
+                <input type="text" placeholder="Ex: Nana Arole Fred" required>
             </div>
-            <button type="button" class="btn-nav btn-next" onclick="move(1, 2)">Suivant →</button>
+            <div class="grid">
+                <div class="input-group">
+                    <label>Matricule (7 car.)</label>
+                    <input type="text" maxlength="7" placeholder="23V2177">
+                </div>
+                <div class="input-group">
+                    <label>Téléphone</label>
+                    <input type="tel" placeholder="656641731">
+                </div>
+            </div>
+            <button type="button" class="btn-nav btn-next" onclick="move(1, 2)">Étape suivante →</button>
         </div>
 
         <div class="form-step" id="step2">
-            <h2>🎓 Cursus</h2>
+            <h2>🎓 Parcours Universitaire</h2>
             <div class="input-group">
                 <label>Faculté / École</label>
                 <select>
-                    <option>Faculté des Sciences</option>
-                    <option>Polytechnique</option>
-                    <option>IUT</option>
+                    <option>Faculté des Sciences (FS)</option>
+                    <option>Faculté des Arts, Lettres et Sciences Humaines (FALSH)</option>
+                    <option>Faculté des Sciences Juridiques et Politiques (FSJP)</option>
+                    <option>Faculté des Sciences de l'Éducation (FSE)</option>
+                    <option>Faculté de Médecine et des Sciences Biomédicales (FMSB)</option>
+                    <option>École Normale Supérieure (ENS)</option>
+                    <option>École Nationale Supérieure Polytechnique (ENSPY)</option>
+                    <option>IUT / Autres</option>
                 </select>
             </div>
-            <div class="input-group"><label>Filière</label><input type="text" placeholder="Informatique"></div>
+            <div class="input-group">
+                <label>Filière / Département</label>
+                <input type="text" placeholder="Ex: Informatique">
+            </div>
             <div class="grid">
                 <button type="button" class="btn-nav btn-prev" onclick="move(2, 1)">Retour</button>
                 <button type="button" class="btn-nav btn-next" onclick="move(2, 3)">Suivant</button>
@@ -167,10 +200,32 @@
         </div>
 
         <div class="form-step" id="step3">
-            <h2>🩺 Santé</h2>
+            <h2>🩺 Paramètres Médicaux</h2>
             <div class="grid">
-                <div class="input-group"><label>Groupe</label><select><option>O+</option><option>A+</option></select></div>
-                <div class="input-group"><label>Temp (°C)</label><input type="number" step="0.1" placeholder="37.0"></div>
+                <div class="input-group">
+                    <label>Groupe Sanguin</label>
+                    <select>
+                        <option>O+</option><option>O-</option>
+                        <option>A+</option><option>A-</option>
+                        <option>B+</option><option>B-</option>
+                        <option>AB+</option><option>AB-</option>
+                        <option>Ne sais pas</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Température (°C)</label>
+                    <input type="number" step="0.1" placeholder="37.0">
+                </div>
+            </div>
+            <div class="grid">
+                <div class="input-group">
+                    <label>Poids (kg)</label>
+                    <input type="number" placeholder="70">
+                </div>
+                <div class="input-group">
+                    <label>Tension</label>
+                    <input type="text" placeholder="12/8">
+                </div>
             </div>
             <div class="grid">
                 <button type="button" class="btn-nav btn-prev" onclick="move(3, 2)">Retour</button>
@@ -179,38 +234,75 @@
         </div>
 
         <div class="form-step" id="step4">
-            <h2>🚨 Urgence</h2>
-            <div class="input-group"><label>Nom du parent</label><input type="text" placeholder="Nom complet"></div>
-            <div class="input-group"><label>Téléphone urgence</label><input type="tel" placeholder="Numéro"></div>
+            <h2>🚨 En cas d'urgence</h2>
+            <div class="input-group">
+                <label>Nom du contact (Parent/Tuteur)</label>
+                <input type="text" placeholder="Nom complet">
+            </div>
+            <div class="input-group">
+                <label>Téléphone du contact</label>
+                <input type="tel" placeholder="Numéro joignable">
+            </div>
             <div class="grid">
                 <button type="button" class="btn-nav btn-prev" onclick="move(4, 3)">Retour</button>
-                <button type="submit" class="btn-nav btn-next">Terminer ✅</button>
+                <button type="submit" class="btn-nav btn-next btn-submit">Valider le dossier ✅</button>
             </div>
         </div>
     </form>
 </div>
 
 <script>
+    /**
+     * Gère le passage entre les étapes du formulaire
+     * @param {number} current - L'étape actuelle
+     * @param {number} next - L'étape vers laquelle aller
+     */
     function move(current, next) {
-        // 1. Masquer l'étape actuelle et afficher la suivante
-        document.getElementById('step' + current).classList.remove('active');
-        document.getElementById('step' + next).classList.add('active');
+        // Validation simple : on s'assure que les éléments existent
+        const currentStep = document.getElementById('step' + current);
+        const nextStep = document.getElementById('step' + next);
+
+        if (currentStep && nextStep) {
+            // Masquer l'étape actuelle et afficher la suivante
+            currentStep.classList.remove('active');
+            nextStep.classList.add('active');
+
+            // Mise à jour visuelle du Stepper
+            updateStepper(next);
+            
+            // Scroll automatique vers le haut du formulaire pour mobile
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    /**
+     * Met à jour l'état visuel de la barre de progression
+     * @param {number} activeStepNum - Le numéro de l'étape active
+     */
+    function updateStepper(activeStepNum) {
+        const items = document.querySelectorAll('.step-item');
         
-        // 2. Gérer visuellement le stepper (les petits ronds)
-    const allSteps = document.querySelectorAll('.step-item');
-        allSteps.forEach((step, index) => {
+        items.forEach((item, index) => {
             const stepNum = index + 1;
-            if (stepNum === next) {
-                step.classList.add('active');
-                step.classList.remove('completed');
-            } else if (stepNum < next) {
-                step.classList.add('completed');
-                step.classList.remove('active');
+            
+            if (stepNum === activeStepNum) {
+                item.classList.add('active');
+                item.classList.remove('completed');
+            } else if (stepNum < activeStepNum) {
+                item.classList.add('completed');
+                item.classList.remove('active');
             } else {
-                step.classList.remove('active', 'completed');
+                item.classList.remove('active', 'completed');
             }
         });
     }
+
+    // Gestion de la soumission finale
+    document.getElementById('medicalForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Félicitations ! Votre dossier médical a été enregistré avec succès.');
+        // Ici tu peux ajouter ton code pour envoyer les données au serveur
+    });
 </script>
 
 </body>
