@@ -3,158 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portail Médical - UY1</title>
+    <title>SANTÉ UY1 - Portail Médical</title>
     <style>
         :root {
-            --primary-blue: #2c3e50;
-            --medical-blue: #3498db;
-            --light-bg: #f4f7f6;
+            --bg-dark: #121212;
+            --card-bg: #1e1e1e;
+            --primary-green: #2ecc71;
+            --text-gray: #b3b3b3;
             --white: #ffffff;
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--light-bg);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--white);
+            margin: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
-            padding: 20px;
         }
 
-        .form-container {
-            background: var(--white);
+        .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
+            background: var(--card-bg);
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border-top: 8px solid var(--medical-blue);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
 
-        /* Barre de progression */
-        .progress-bar {
+        /* Barre de progression style AgroField */
+        .stepper {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            position: relative;
         }
 
-        .step-indicator {
-            width: 45%;
-            height: 8px;
-            background: #eee;
-            border-radius: 10px;
+        .step-item {
+            text-align: center;
+            z-index: 2;
+            flex: 1;
         }
 
-        .step-indicator.active { background: var(--medical-blue); }
+        .step-number {
+            width: 35px;
+            height: 35px;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-weight: bold;
+            color: var(--text-gray);
+            border: 2px solid #333;
+        }
 
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { font-size: 20px; color: var(--primary-blue); }
+        .step-item.active .step-number {
+            background: var(--primary-green);
+            color: black;
+            border-color: var(--primary-green);
+        }
 
-        .step { display: none; } /* On cache les étapes par défaut */
-        .step.active { display: block; } /* On affiche l'étape active */
+        .step-label { font-size: 10px; text-transform: uppercase; color: var(--text-gray); }
 
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; }
+        /* Formulaire */
+        .form-step { display: none; }
+        .form-step.active { display: block; animation: fadeIn 0.5s; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h2 { font-size: 20px; margin-bottom: 20px; color: var(--primary-green); }
+        
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: var(--text-gray); font-size: 14px; }
+        
         input, select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #dcdde1;
-            border-radius: 6px;
+            background: #2a2a2a;
+            border: 1px solid #3d3d3d;
+            border-radius: 10px;
+            color: white;
             box-sizing: border-box;
         }
 
-        .btn-container { display: flex; gap: 10px; margin-top: 20px; }
-        button {
-            flex: 1;
+        .btn-nav {
+            width: 100%;
             padding: 15px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
+            margin-top: 10px;
         }
 
-        .btn-next, .btn-submit { background: var(--medical-blue); color: white; }
-        .btn-prev { background: #bdc3c7; color: white; }
-        button:hover { opacity: 0.9; }
+        .btn-next { background: var(--primary-green); color: black; }
+        .btn-prev { background: transparent; color: var(--text-gray); border: 1px solid #3d3d3d; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
     </style>
 </head>
 <body>
 
-<div class="form-container">
-    <div class="header">
-        <h1>🩺 Dossier Médical Étudiant</h1>
-        <p>Université de Yaoundé I</p>
+<div class="container">
+    <div class="stepper">
+        <div class="step-item active" id="s1"><div class="step-number">1</div><div class="step-label">Identité</div></div>
+        <div class="step-item" id="s2"><div class="step-number">2</div><div class="step-label">Cursus</div></div>
+        <div class="step-item" id="s3"><div class="step-number">3</div><div class="step-label">Santé</div></div>
+        <div class="step-item" id="s4"><div class="step-number">4</div><div class="step-label">Urgence</div></div>
     </div>
+<div class="input-group"><label>Nom Complet</label><input type="text" placeholder="Ex: Jean-Baptiste KOFFI" required></div>
+            <div class="grid">
+                <div class="input-group"><label>Matricule (7 car.)</label><input type="text" maxlength="7" placeholder="Ex: 24U1234"></div>
+                <div class="input-group"><label>Téléphone</label><input type="tel" placeholder="+237 ..."></div>
+            </div>
+            <button type="button" class="btn-nav btn-next" onclick="move(1, 2)">Étape suivante →</button>
+        </div>
 
-    <div class="progress-bar">
-        <div class="step-indicator active" id="ind1"></div>
-        <div class="step-indicator" id="ind2"></div>
-    </div>
-
-    <form id="multiStepForm">
-        <div class="step active" id="step1">
-            <h2 style="font-size: 16px; color: var(--medical-blue);">Phase 1 : Identification</h2>
+        <div class="form-step" id="step2">
+            <h2>🎓 Parcours Universitaire</h2>
             <div class="input-group">
-                <label>Nom complet</label>
-                <input type="text" placeholder="Ex: Fred Arole" required>
+                <label>Faculté / École</label>
+                <select>
+                    <option>Faculté des Sciences</option>
+                    <option>FALSH</option>
+                    <option>FSJP</option>
+                    <option>FMSB</option>
+                    <option>Polytechnique</option>
+                </select>
             </div>
-            <div class="input-group">
-                <label>Matricule (7 car. max)</label>
-                <input type="text" maxlength="7" placeholder="Ex: 22A1234" required>
-            </div>
-            <div class="input-group">
-                <label>Email Universitaire</label>
-                <input type="email" placeholder="etudiant@uy1.cm" required>
-            </div>
-            <div class="btn-container">
-                <button type="button" class="btn-next" onclick="nextStep()">Suivant ➡️</button>
+            <div class="input-group"><label>Filière / Département</label><input type="text" placeholder="Ex: Informatique"></div>
+            <div class="grid">
+                <button type="button" class="btn-nav btn-prev" onclick="move(2, 1)">Retour</button>
+                <button type="button" class="btn-nav btn-next" onclick="move(2, 3)">Suivant</button>
             </div>
         </div>
 
-        <div class="step" id="step2">
-            <h2 style="font-size: 16px; color: var(--medical-blue);">Phase 2 : Données Médicales</h2>
-            <div class="input-group">
-                <label>Groupe Sanguin</label>
-                <select required>
-                    <option value="">Choisir...</option>
-                    <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-                    <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
-                </select>
+        <div class="form-step" id="step3">
+            <h2>🩺 Paramètres Médicaux</h2>
+            <div class="grid">
+                <div class="input-group"><label>Groupe Sanguin</label><select><option>O+</option><option>A+</option><option>B+</option><option>AB+</option></select></div>
+                <div class="input-group"><label>Température (°C)</label><input type="number" step="0.1" placeholder="37.0"></div>
             </div>
-            <div class="input-group">
-                <label>Température (°C)</label>
-                <input type="number" step="0.1" placeholder="37.0">
+            <div class="grid">
+                <div class="input-group"><label>Poids (kg)</label><input type="number" placeholder="70"></div>
+                <div class="input-group"><label>Tension</label><input type="text" placeholder="12/8"></div>
             </div>
-            <div class="input-group">
-                <label>Tension Artérielle</label>
-                <input type="text" placeholder="Ex: 12/8">
+            <div class="grid">
+                <button type="button" class="btn-nav btn-prev" onclick="move(3, 2)">Retour</button>
+                <button type="button" class="btn-nav btn-next" onclick="move(3, 4)">Suivant</button>
             </div>
-            <div class="btn-container">
-                <button type="button" class="btn-prev" onclick="prevStep()">⬅️ Retour</button>
-                <button type="submit" class="btn-submit">Enregistrer ✅</button>
+        </div>
+
+        <div class="form-step" id="step4">
+            <h2>🚨 En cas d'urgence</h2>
+            <div class="input-group"><label>Nom du contact (Parent/Tuteur)</label><input type="text" placeholder="Nom complet"></div>
+            <div class="input-group"><label>Téléphone du contact</label><input type="tel" placeholder="Numéro joignable"></div>
+            <div class="grid">
+                <button type="button" class="btn-nav btn-prev" onclick="move(4, 3)">Retour</button>
+                <button type="submit" class="btn-nav btn-next">Valider le dossier ✅</button>
             </div>
         </div>
     </form>
 </div>
 
 <script>
-    function nextStep() {
-        document.getElementById('step1').classList.remove('active');
-        document.getElementById('step2').classList.add('active');
-        document.getElementById('ind2').classList.add('active');
+    function move(current, next) {
+        document.getElementById('step' + current).classList.remove('active');
+        document.getElementById('step' + next).classList.add('active');
+        
+        document.getElementById('s' + next).classList.add('active');
+        if(next < current) document.getElementById('s' + current).classList.remove('active');
     }
-
-    function prevStep() {
-        document.getElementById('step2').classList.remove('active');
-        document.getElementById('step1').classList.add('active');
-        document.getElementById('ind2').classList.remove('active');
-    }
-
-    document.getElementById('multiStepForm').onsubmit = function(e) {
-        e.preventDefault();
-        alert('Données enregistrées avec succès pour l\'Université de Yaoundé I !');
-    };
 </script>
 
 </body>
 </html>
+    <form id="medicalForm">
+        <div class="form-step active" id="step1">
+            <h2>👤 Informations Personnelles</h2>
