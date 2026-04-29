@@ -309,41 +309,7 @@
                 else item.classList.remove('active');
             });
         }
-   // À mettre juste après ta fonction move(current, next) { ... }
-document.getElementById('medicalForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // Bloque le rechargement de la page
-
-    // 1. On récupère le nom pour personnaliser le message
-    const nomInput = document.querySelector('input[placeholder*="Nom Complet"]');
-    const nomEtudiant = nomInput ? nomInput.value : "Étudiant";
-
-    // 2. On remplace le formulaire par le message de succès
-    const container = document.querySelector('.container');
-    
-    container.innerHTML = 
-        <div style="text-align: center; padding: 40px 10px; animation: fadeIn 0.5s ease;">
-            <div style="background: rgba(124, 252, 0, 0.1); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 2px solid #7cfc00;">
-                <span style="font-size: 40px;">✅</span>
-            </div>
-            
-            <h2 style="color: #7cfc00; font-size: 24px; margin-bottom: 10px;">Envoi réussi !</h2>
-            
-            <p style="color: white; font-size: 16px; line-height: 1.5; opacity: 0.9;">
-                Félicitations <strong>${nomEtudiant}</strong>,<br>
-                Votre relevé médical a été transmis avec succès au service de santé de l'Université de Yaoundé I.
-            </p>
-            
-            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-                <p style="color: #d4af37; font-size: 13px;">Référence dossier : UY1-${Math.floor(Math.random() * 9000) + 1000}</p>
-                <button onclick="window.location.reload()" style="background: transparent; border: 1px solid #7cfc00; color: #7cfc00; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 15px;">
-                    Remplir un nouveau formulaire
-                </button>
-            </div>
-        </div>
-    ;
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+  
     </script>
 </body>
 </html>
