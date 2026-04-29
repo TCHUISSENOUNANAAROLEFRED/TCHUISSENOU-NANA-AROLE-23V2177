@@ -278,39 +278,51 @@
     </div>
 
     <script>
-    function validateAndMove(current, next) {
+   function validateAndMove(current, next) {
     const currentStepDiv = document.getElementById('step' + current);
+    if (!currentStepDiv) return;
+
     const inputs = currentStepDiv.querySelectorAll('.required');
     let allFilled = true;
 
-    // On vérifie chaque champ obligatoire de l'étape actuelle
     inputs.forEach(input => {
         if (input.value.trim() === "") {
-            input.style.border = "2px solid #ff4d4d"; // Bordure rouge si vide
+            input.style.border = "2px solid #ff4d4d";
             allFilled = false;
         } else {
-            input.style.border = "1px solid rgba(255, 255, 255, 0.1)"; // Bordure normale
+            input.style.border = "1px solid rgba(255, 255, 255, 0.1)";
         }
     });
 
     if (allFilled) {
+        // Sécurité : on vérifie si l'élément error existe avant de le cacher
+        const errorElement = document.getElementById('error' + current);
+        if (errorElement) {
+            errorElement.style.display = "none";
+        }
         move(current, next);
     } else {
-        alert("Veuillez remplir tous les champs obligatoires (marqués par une étoile rouge).");
+        // Sécurité : on vérifie si l'élément error existe avant de l'afficher
+        const errorElement = document.getElementById('error' + current);
+        if (errorElement) {
+            errorElement.style.display = "block";
+        } else {
+            alert("Veuillez remplir tous les champs obligatoires.");
+        }
     }
 }
 
 function move(current, next) {
-    const currentStep = document.getElementById('step' + current);
-    const nextStep = document.getElementById('step' + next);
-    if (currentStep && nextStep) {
-        currentStep.classList.remove('active');
-        nextStep.classList.add('active');
+    const currentDiv = document.getElementById('step' + current);
+    const nextDiv = document.getElementById('step' + next);
+    if (currentDiv && nextDiv) {
+        currentDiv.classList.remove('active');
+        nextDiv.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
-// Gestion du message final
+// Gestion du message de succès final
 document.addEventListener('submit', function(e) {
     e.preventDefault();
     const container = document.querySelector('.container');
@@ -319,7 +331,7 @@ document.addEventListener('submit', function(e) {
             <div style="text-align: center; padding: 40px 15px;">
                 <div style="font-size: 50px; margin-bottom: 20px;">✅</div>
                 <h2 style="color: #7cfc00; margin-bottom: 15px;">Dossier Reçu !</h2>
-                <p style="color: white; line-height: 1.6;">Votre relevé médical a été transmis avec succès à l'Université de Yaoundé I.</p>
+                <p style="color: white; line-height: 1.6;">Votre relevé médical VitalUY1 a été transmis avec succès.</p>
                 <button onclick="window.location.reload()" style="margin-top: 25px; background: #7cfc00; color: black; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer;">Terminer</button>
             </div>;
     }
