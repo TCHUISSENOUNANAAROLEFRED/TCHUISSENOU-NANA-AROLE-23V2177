@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portail Médical - Université de Yaoundé I</title>
+    <style>
+        :root {
+            --primary-blue: #2c3e50;
+            --medical-blue: #3498db;
+            --light-bg: #f4f7f6;
+            --white: #ffffff;
+            --accent-green: #2ecc71;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .form-container {
+            background: var(--white);
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-top: 8px solid var(--medical-blue);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--primary-blue);
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        section {
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: var(--medical-blue);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-blue);
+            font-size: 14px;
+        }
+
+        input, select, textarea {
+            padding: 12px;
+            border: 1px solid #dcdde1;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--medical-blue);
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.2);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--medical-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 500px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <div class="header">
+        <h1>🩺 Collecte de Données Médicales</h1>
+        <p>Université de Yaoundé I - Centre de Santé</p>
+    </div>
+
+    <form id="medicalForm">
+        <section>
+            <h2>Informations Personnelles</h2>
+            <div class="input-group">
+                <label for="nom">Nom complet</label>
+                <input type="text" id="nom" name="nom" placeholder="Ex: Fred Arole" required>
+            </div>
+            
+            <div class="grid">
+                <div class="input-group">
+                    <label for="matricule">Matricule (7 car.)</label>
+                    <input type="text" id="matricule" name="matricule" maxlength="7" placeholder="Ex: 22A1234" required>
+                </div>
+                <div class="input-group">
+                    <label for="tel">Téléphone</label>
+                    <input type="tel" id="tel" name="tel" placeholder="6xx xxx xxx" required>
+                </div>
+            </div>
+<div class="input-group">
+                <label for="email">Email Universitaire</label>
+                <input type="email" id="email" name="email" placeholder="etudiant@uy1.cm" required>
+            </div>
+        </section>
+
+        <section>
+            <h2>Paramètres Vitaux</h2>
+            <div class="grid">
+                <div class="input-group">
+                    <label for="groupe">Groupe Sanguin</label>
+                    <select id="groupe" name="groupe" required>
+                        <option value="">Sélectionner...</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="temp">Température (°C)</label>
+                    <input type="number" id="temp" name="temp" step="0.1" placeholder="Ex: 37.2" required>
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="input-group">
+                    <label for="tension">Tension (systolique)</label>
+                    <input type="text" id="tension" name="tension" placeholder="Ex: 12/8" required>
+                </div>
+                <div class="input-group">
+                    <label for="allergies">Allergies connues</label>
+                    <input type="text" id="allergies" name="allergies" placeholder="Néant ou précisez">
+                </div>
+            </div>
+        </section>
+
+        <button type="submit" class="btn-submit">Enregistrer les données</button>
+    </form>
+</div>
+
+</body>
+</html>
