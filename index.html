@@ -7,7 +7,7 @@
     <style>
         :root {
             --bg-dark: #121212;
-            --card-bg: #1e1e1e;
+            --card-bg: rgba(30, 30, 30, 0.85); /* Rendu transparent pour le glassmorphism */
             --primary-green: #2ecc71;
             --text-gray: #b3b3b3;
             --white: #ffffff;
@@ -15,93 +15,115 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
+            /* AJOUT : Image de fond médicale/universitaire */
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://images.unsplash.com/photo-1576091160550-2173dbc9982a?auto=format&fit=crop&q=80&w=1000');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: var(--white);
             margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 450px; /* Un peu plus étroit pour un look mobile-first */
             background: var(--card-bg);
             padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border-radius: 24px;
+            backdrop-filter: blur(15px); /* Effet de flou sur le fond */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
         }
 
-        /* Barre de progression style AgroField */
+        /* Stepper amélioré */
         .stepper {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             position: relative;
         }
 
         .step-item {
             text-align: center;
-            z-index: 2;
             flex: 1;
+            position: relative;
         }
 
         .step-number {
-            width: 35px;
-            height: 35px;
+            width: 30px;
+            height: 30px;
             background: #333;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 8px;
+            margin: 0 auto 5px;
+            font-size: 14px;
             font-weight: bold;
             color: var(--text-gray);
-            border: 2px solid #333;
+            transition: 0.4s;
         }
 
         .step-item.active .step-number {
             background: var(--primary-green);
             color: black;
-            border-color: var(--primary-green);
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
         }
 
-        .step-label { font-size: 10px; text-transform: uppercase; color: var(--text-gray); }
+        .step-item.completed .step-number {
+            background: #1a5c35;
+            color: var(--white);
+        }
+
+        .step-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-gray); }
 
         /* Formulaire */
         .form-step { display: none; }
-        .form-step.active { display: block; animation: fadeIn 0.5s; }
+        .form-step.active { display: block; animation: slideIn 0.4s ease-out; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { 
+            from { opacity: 0; transform: translateX(20px); } 
+            to { opacity: 1; transform: translateX(0); } 
+        }
 
-        h2 { font-size: 20px; margin-bottom: 20px; color: var(--primary-green); }
+        h2 { font-size: 22px; margin-bottom: 25px; color: var(--primary-green); text-align: center;}
         
-        .input-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; color: var(--text-gray); font-size: 14px; }
+        .input-group { margin-bottom: 18px; }
+        label { display: block; margin-bottom: 8px; color: var(--text-gray); font-size: 13px; font-weight: 500; }
         
         input, select {
             width: 100%;
-            padding: 12px;
-            background: #2a2a2a;
-            border: 1px solid #3d3d3d;
-            border-radius: 10px;
+            padding: 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
             color: white;
             box-sizing: border-box;
+            outline: none;
         }
+
+        input:focus { border-color: var(--primary-green); background: rgba(255,255,255,0.1); }
 
         .btn-nav {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             border: none;
-            border-radius: 12px;
-            font-weight: bold;
+            border-radius: 14px;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.3s;
             margin-top: 10px;
+            font-size: 15px;
         }
-
-        .btn-next { background: var(--primary-green); color: black; }
-        .btn-prev { background: transparent; color: var(--text-gray); border: 1px solid #3d3d3d; }
+        .btn-next { background: var(--primary-green); color: #000; }
+        .btn-next:hover { background: #27ae60; transform: translateY(-2px); }
+        .btn-prev { background: transparent; color: var(--text-gray); border: 1px solid rgba(255,255,255,0.2); }
 
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
     </style>
@@ -110,32 +132,34 @@
 
 <div class="container">
     <div class="stepper">
-        <div class="step-item active" id="s1"><div class="step-number">1</div><div class="step-label">Identité</div></div>
+        <div class="step-item active" id="s1"><div class="step-number">1</div><div class="step-label">ID</div></div>
         <div class="step-item" id="s2"><div class="step-number">2</div><div class="step-label">Cursus</div></div>
         <div class="step-item" id="s3"><div class="step-number">3</div><div class="step-label">Santé</div></div>
-        <div class="step-item" id="s4"><div class="step-number">4</div><div class="step-label">Urgence</div></div>
+        <div class="step-item" id="s4"><div class="step-number">4</div><div class="step-label">Aide</div></div>
     </div>
-<div class="input-group"><label>Nom Complet</label><input type="text" placeholder="Ex: Jean-Baptiste KOFFI" required></div>
+
+    <form id="medicalForm">
+        <div class="form-step active" id="step1">
+            <h2>👤 Identité</h2>
+            <div class="input-group"><label>Nom Complet</label><input type="text" placeholder="Ex: Nana Arole Fred"></div>
             <div class="grid">
-                <div class="input-group"><label>Matricule (7 car.)</label><input type="text" maxlength="7" placeholder="Ex: 24U1234"></div>
-                <div class="input-group"><label>Téléphone</label><input type="tel" placeholder="+237 ..."></div>
+                <div class="input-group"><label>Matricule</label><input type="text" maxlength="7" placeholder="23V2177"></div>
+                <div class="input-group"><label>Téléphone</label><input type="tel" placeholder="656641731"></div>
             </div>
-            <button type="button" class="btn-nav btn-next" onclick="move(1, 2)">Étape suivante →</button>
+            <button type="button" class="btn-nav btn-next" onclick="move(1, 2)">Suivant →</button>
         </div>
 
         <div class="form-step" id="step2">
-            <h2>🎓 Parcours Universitaire</h2>
+            <h2>🎓 Cursus</h2>
             <div class="input-group">
                 <label>Faculté / École</label>
                 <select>
                     <option>Faculté des Sciences</option>
-                    <option>FALSH</option>
-                    <option>FSJP</option>
-                    <option>FMSB</option>
                     <option>Polytechnique</option>
+                    <option>IUT</option>
                 </select>
             </div>
-            <div class="input-group"><label>Filière / Département</label><input type="text" placeholder="Ex: Informatique"></div>
+            <div class="input-group"><label>Filière</label><input type="text" placeholder="Informatique"></div>
             <div class="grid">
                 <button type="button" class="btn-nav btn-prev" onclick="move(2, 1)">Retour</button>
                 <button type="button" class="btn-nav btn-next" onclick="move(2, 3)">Suivant</button>
@@ -143,14 +167,10 @@
         </div>
 
         <div class="form-step" id="step3">
-            <h2>🩺 Paramètres Médicaux</h2>
+            <h2>🩺 Santé</h2>
             <div class="grid">
-                <div class="input-group"><label>Groupe Sanguin</label><select><option>O+</option><option>A+</option><option>B+</option><option>AB+</option></select></div>
-                <div class="input-group"><label>Température (°C)</label><input type="number" step="0.1" placeholder="37.0"></div>
-            </div>
-            <div class="grid">
-                <div class="input-group"><label>Poids (kg)</label><input type="number" placeholder="70"></div>
-                <div class="input-group"><label>Tension</label><input type="text" placeholder="12/8"></div>
+                <div class="input-group"><label>Groupe</label><select><option>O+</option><option>A+</option></select></div>
+                <div class="input-group"><label>Temp (°C)</label><input type="number" step="0.1" placeholder="37.0"></div>
             </div>
             <div class="grid">
                 <button type="button" class="btn-nav btn-prev" onclick="move(3, 2)">Retour</button>
@@ -159,12 +179,12 @@
         </div>
 
         <div class="form-step" id="step4">
-            <h2>🚨 En cas d'urgence</h2>
-            <div class="input-group"><label>Nom du contact (Parent/Tuteur)</label><input type="text" placeholder="Nom complet"></div>
-            <div class="input-group"><label>Téléphone du contact</label><input type="tel" placeholder="Numéro joignable"></div>
+            <h2>🚨 Urgence</h2>
+            <div class="input-group"><label>Nom du parent</label><input type="text" placeholder="Nom complet"></div>
+            <div class="input-group"><label>Téléphone urgence</label><input type="tel" placeholder="Numéro"></div>
             <div class="grid">
                 <button type="button" class="btn-nav btn-prev" onclick="move(4, 3)">Retour</button>
-                <button type="submit" class="btn-nav btn-next">Valider le dossier ✅</button>
+                <button type="submit" class="btn-nav btn-next">Terminer ✅</button>
             </div>
         </div>
     </form>
@@ -172,16 +192,26 @@
 
 <script>
     function move(current, next) {
+        // 1. Masquer l'étape actuelle et afficher la suivante
         document.getElementById('step' + current).classList.remove('active');
         document.getElementById('step' + next).classList.add('active');
         
-        document.getElementById('s' + next).classList.add('active');
-        if(next < current) document.getElementById('s' + current).classList.remove('active');
+        // 2. Gérer visuellement le stepper (les petits ronds)
+    const allSteps = document.querySelectorAll('.step-item');
+        allSteps.forEach((step, index) => {
+            const stepNum = index + 1;
+            if (stepNum === next) {
+                step.classList.add('active');
+                step.classList.remove('completed');
+            } else if (stepNum < next) {
+                step.classList.add('completed');
+                step.classList.remove('active');
+            } else {
+                step.classList.remove('active', 'completed');
+            }
+        });
     }
 </script>
 
 </body>
 </html>
-    <form id="medicalForm">
-        <div class="form-step active" id="step1">
-            <h2>👤 Informations Personnelles</h2>
