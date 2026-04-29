@@ -277,57 +277,39 @@
         </form>
     </div>
 
-  <script>
-function move(c, n) {
-    const currentStep = document.getElementById('step' + c);
-    const nextStep = document.getElementById('step' + n);
-    if (currentStep && nextStep) {
-        currentStep.classList.remove('active');
-        nextStep.classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-}
+<script>
+        function validateAndMove(current, next) {
+            const currentStepDiv = document.getElementById('step' + current);
+            const inputs = currentStepDiv.querySelectorAll('.required');
+            let allFilled = true;
 
-function validateAndMove(c, n) {
-    const currentDiv = document.getElementById('step' + c);
-    const inputs = currentDiv.querySelectorAll('.required');
-    let allFilled = true;
+            inputs.forEach(input => {
+                if (input.value.trim() === "") {
+                    input.style.border = "1px solid var(--error)";
+                    allFilled = false;
+                } else {
+                    input.style.border = "1px solid rgba(255, 255, 255, 0.1)";
+                }
+            });
 
-    // On vérifie si les champs obligatoires sont remplis
-    inputs.forEach(input => {
-        if (input.value.trim() === "") {
-            input.style.border = "2px solid #ff4d4d";
-            allFilled = false;
-        } else {
-            input.style.border = "1px solid rgba(255, 255, 255, 0.1)";
+            if (allFilled) {
+                document.getElementById('error' + current).style.display = "none";
+                move(current, next);
+            } else {
+                document.getElementById('error' + current).style.display = "block";
+            }
         }
-    });
+function move(current, next) {
+            document.getElementById('step' + current).classList.remove('active');
+            document.getElementById('step' + next).classList.add('active');
+            
+            // Stepper update
+            document.querySelectorAll('.step-item').forEach((item, index) => {
+                if (index + 1 <= next) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+        }
+    </script>
 
-    if (allFilled) {
-        move(c, n);
-    } else {
-        alert("Attention : Veuillez remplir tous les champs marqués d'une étoile rouge avant de continuer.");
-    }
-}
-
-// Gestion de l'envoi final
-document.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const container = document.querySelector('.container');
-    if (container) {
-        container.innerHTML = 
-            <div style="text-align: center; padding: 50px 20px;">
-                <div style="font-size: 60px; margin-bottom: 20px;">✅</div>
-                <h2 style="color: #7cfc00; margin-bottom: 15px;">Dossier Reçu avec Succès !</h2>
-                <p style="color: white; font-size: 1.1em; line-height: 1.6;">
-                    Merci <strong>Fred</strong>, votre relevé médical a bien été transmis au service de santé de l'Université de Yaoundé I.
-                </p>
-                <button onclick="window.location.reload()" style="margin-top: 30px; background: #7cfc00; color: black; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer;">
-                    Terminer l'enregistrement
-                </button>
-            </div>;
-    }
-});
-</script>
 </body>
 </html>
