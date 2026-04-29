@@ -309,7 +309,32 @@
                 else item.classList.remove('active');
             });
         }
-  
+  // --- COPIE À PARTIR D'ICI ---
+document.getElementById('medicalForm').onsubmit = function(event) {
+    event.preventDefault(); // Empêche le rechargement
+
+    // On récupère le nom saisi
+    const nomSaisi = document.querySelector('input[class*="required"]').value || "Étudiant";
+
+    // On remplace le contenu du container par le message
+    const mainContainer = document.querySelector('.container');
+    
+    mainContainer.innerHTML = 
+        <div style="text-align: center; padding: 40px 15px;">
+            <div style="font-size: 50px; margin-bottom: 20px;">✅</div>
+            <h2 style="color: #7cfc00; margin-bottom: 15px;">Dossier Reçu !</h2>
+            <p style="color: white; line-height: 1.6;">
+                Merci <strong>${nomSaisi}</strong>.<br>
+                Votre relevé médical a été transmis avec succès à l'Université de Yaoundé I.
+            </p>
+            <button onclick="window.location.reload()" style="margin-top: 25px; background: #7cfc00; color: black; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                Terminer
+            </button>
+        </div>
+    ;
+    return false;
+};
+// --- FIN DU CODE ---
     </script>
 </body>
 </html>
